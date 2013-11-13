@@ -12,12 +12,18 @@ class PasswordCrack{
         }
     }
 
-    public static String[] manglePrepend(String s){
-        String[] mangledPrepend = new String[92];
+    public static void manglePrepend(Student s){
+        // String[] mangledPrepend = new String[92];
+        // String newMangle;
         for(int i = 32; i < 125; i++){
-            mangledPrepend[i-32] = Character.toChars(i).toString() + s;
+            if(s.cracked == false){
+                // mangledPrepend[i-32] = Character.toChars(i).toString() + s;
+                PasswordCrack.checkMatch(s, Character.toChars(i).toString() + s);
+            }
+            else
+                break;
         }
-        return mangledPrepend;
+        // return mangledPrepend;
     }
 
     // good
@@ -77,6 +83,64 @@ class PasswordCrack{
         return sb.toString();
     }
 
+    public static void mangles(Student s, String str, int count){
+        // no mangle
+        String newStr = str;
+        PasswordCrack.checkMatch(s, PasswordCrack.mangleToUpper(newStr));
+        if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleToLower(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleDuplicate(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleReverse(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleDelFirstChar(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleDelLastChar(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleReflect(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleCapitalize(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleNCapitalize(newStr));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleToggleCase(newStr, 1));
+        }
+        else if(s.cracked == false){
+            newStr = str;
+            PasswordCrack.checkMatch(s, PasswordCrack.mangleToggleCase(newStr, 2));
+        }
+    }
+
+    public static void checkMatch(Student s, String original){
+        // encode generated password
+        String encrypted = jcrypt.crypt(s.salt, original);
+                    
+        // compare it with stored encrypted password using 1st 8 characters
+        if(encrypted.regionMatches(0, s.salt + s.password, 0, 8)){
+            System.out.println("Matched password!");
+            System.out.println(s.username + " has password " + original);
+            s.cracked = true;
+        }
+    }
+
 	public static void main(String args[]) throws IOException{
         // java PasswordCrack inputFile1 inputFile2
         File inputFile1 = new File(args[0]);
@@ -124,18 +188,22 @@ class PasswordCrack{
 
                     original = students[j].username;
                     if(count % 3 == 0){
-                        original = students[j].username;
+                        // original = students[j].username;
+                        PasswordCrack.mangles(students[j], students[j].username, count);
                     }
 
                     else if(count % 3 == 1){
-                        original = students[j].firstName;
+                        // original = students[j].firstName;
+                        PasswordCrack.mangles(students[j], students[j].firstName, count);
                     }
 
                     else if(count % 3 == 2){
-                        original = students[j].lastName;
+                        // original = students[j].lastName;
+                        PasswordCrack.mangles(students[j], students[j].lastName, count);
                     }
 
                     //===================================================
+                    /*
                     if(count % 10 == 0){
                         original = PasswordCrack.mangleToUpper(original);
                         // System.out.println(original);
@@ -185,6 +253,7 @@ class PasswordCrack{
                         original = PasswordCrack.mangleToggleCase(original, count);
                         // System.out.println(original);
                     }
+                    */
         //=======================================
         // if 0 <= counter < # of mingles
         // username
@@ -204,16 +273,8 @@ class PasswordCrack{
         // then maybe combeinations of words from the dictioanry???
         //=======================================
 
-        // call next function to generate new password
-        // encode generated password
-                    String encrypted = jcrypt.crypt(students[j].salt, original);
-                    
-        // compare it with stored encrypted password using 1st 8 characters
-                    if(encrypted.regionMatches(0, students[j].salt + students[j].password, 0, 8)){
-                        System.out.println("Matched password!");
-                        System.out.println(students[j].username + " has password " + original);
-                        students[j].cracked = true;
-                    }
+        // call next function to generate new password and check match
+                    // PasswordCrack.checkMatch(students[j], original);        
 
         // if they match
         // print the cracked line in the terminal with real password in it

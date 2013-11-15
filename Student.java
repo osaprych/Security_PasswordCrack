@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Student{
 
 	String username;
@@ -6,6 +8,7 @@ class Student{
 	String firstName;
 	String lastName;
 	boolean cracked;
+	ArrayList<String> passwords;
 
 	Student(String u, String s, String p, String fn, String ln){
 		this.username = u;
@@ -14,6 +17,7 @@ class Student{
 		this.firstName = fn;
 		this.lastName = ln;
 		this.cracked = false;
+		passwords = new ArrayList<String>();
 		// System.out.println("Student!");
 	}
 }

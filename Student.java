@@ -7,6 +7,7 @@ class Student{
 	String password;
 	String firstName;
 	String lastName;
+	String name;
 	boolean cracked;
 	ArrayList<String> passwords;
 
@@ -16,6 +17,7 @@ class Student{
 		this.password = p;
 		this.firstName = fn;
 		this.lastName = ln;
+		this.name = fn + ln;
 		this.cracked = false;
 		passwords = new ArrayList<String>();
 		// System.out.println("Student!");

@@ -40,11 +40,17 @@ class PasswordCrack{
     }
 
     public static String mangleDelFirstChar(String s){
-        return s.substring(1, s.length());
+        if(s.length() > 0)
+            return s.substring(1, s.length());
+        else
+            return s;
     }
 
     public static String mangleDelLastChar(String s){
-        return s.substring(0, s.length() - 1);
+        if(s.length() > 0)
+            return s.substring(0, s.length() - 1);
+        else
+            return s;
     }    
 
     public static String mangleReflect(String s){
@@ -52,11 +58,17 @@ class PasswordCrack{
     }
 
     public static String mangleCapitalize(String s){
-        return s.substring(0, 1).toUpperCase() + s.substring(1, s.length()).toLowerCase();
+        if(s.length() > 0)
+            return s.substring(0, 1).toUpperCase() + s.substring(1, s.length()).toLowerCase();
+        else
+            return s;
     }
 
     public static String mangleNCapitalize(String s){
-        return s.substring(0, 1).toLowerCase() + s.substring(1, s.length()).toUpperCase();
+        if(s.length() > 0)
+            return s.substring(0, 1).toLowerCase() + s.substring(1, s.length()).toUpperCase();
+        else
+            return s;
     }
 
     public static String mangleToggleCase(String s, int count){
@@ -70,6 +82,32 @@ class PasswordCrack{
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < s.length(); i++){
             if(i % 2 == toggleCase){
+                sb.append(s.substring(i, i + 1).toUpperCase());
+            }
+            else{
+                sb.append(s.substring(i, i + 1).toLowerCase());
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String mangleToggleCase0(String s){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < s.length(); i++){
+            if(i % 2 == 0){
+                sb.append(s.substring(i, i + 1).toUpperCase());
+            }
+            else{
+                sb.append(s.substring(i, i + 1).toLowerCase());
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String mangleToggleCase1(String s){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < s.length(); i++){
+            if(i % 2 == 1){
                 sb.append(s.substring(i, i + 1).toUpperCase());
             }
             else{
@@ -161,6 +199,34 @@ class PasswordCrack{
         return container;
     }
 
+    public static ArrayList<String> comboMangles2(String str){
+        ArrayList<String> container = new ArrayList<String>();
+        container.add(PasswordCrack.mangleReverse(str) + str);
+        // capitalize and append
+        ArrayList<String> mergeHelper1 = new ArrayList<String>(PasswordCrack.mangleAppend(PasswordCrack.mangleCapitalize(str)));
+        container.addAll(mergeHelper1);
+        // Ncapitalize and append
+        ArrayList<String> mergeHelper2 = new ArrayList<String>(PasswordCrack.manglePrepend(PasswordCrack.mangleNCapitalize(str)));
+        container.addAll(mergeHelper2);
+        // capitalize and prepend
+        ArrayList<String> mergeHelper3 = new ArrayList<String>(PasswordCrack.mangleAppend(PasswordCrack.mangleCapitalize(str)));
+        container.addAll(mergeHelper3);
+        // Ncapitalize and prepend
+        ArrayList<String> mergeHelper4 = new ArrayList<String>(PasswordCrack.manglePrepend(PasswordCrack.mangleNCapitalize(str)));
+        container.addAll(mergeHelper4);
+        return container;
+    }
+
+    // public static ArrayList<String> comboManglesAppendPrepend(String str){
+    //     ArrayList<String> mergeHelper1 = new ArrayList<String>(PasswordCrack.manglePrepend(str));
+        
+    //     for(int i = 0; i < mergeHelper1.size(), i++){
+    //         ArrayList<String> mergeHelper2 = new ArrayList<String>(PasswordCrack.mangleAppend(mergeHelper1.size()));
+    //         container.addAll(mergeHelper2);
+    //     }
+    //     container.addAll(mergeHelper);
+    // }
+
     public static ArrayList<String> replaceMangles(String str){
         ArrayList<String> container = new ArrayList<String>();
         container.add(PasswordCrack.mangleReplaceE(str));
@@ -202,7 +268,85 @@ class PasswordCrack{
         }
     }
 
-	public static void main(String args[]) throws IOException{
+    public static String generateMangles(String str) {
+        int caseNum = new Random().nextInt(17);
+        String result = "";
+
+        switch (caseNum) {
+            case 0:
+                result = PasswordCrack.mangleToUpper(str);
+                break;
+
+            case 1:
+                result = PasswordCrack.mangleToLower(str);
+                break;
+
+            case 2:
+                result = PasswordCrack.mangleDuplicate(str);
+                break;
+
+            case 3:
+                result = PasswordCrack.mangleReverse(str);
+                break;
+
+            case 4:
+                result = PasswordCrack.mangleDelFirstChar(str);
+                break;
+
+            case 5:
+                result = PasswordCrack.mangleDelLastChar(str);
+                break;
+
+            case 6:
+                result = PasswordCrack.mangleReflect(str);
+                break;
+
+            case 7:
+                result = PasswordCrack.mangleCapitalize(str);
+                break;
+
+            case 8:
+                result = PasswordCrack.mangleNCapitalize(str);
+                break;
+
+            case 9:
+                result = PasswordCrack.mangleToggleCase0(str);
+                break;
+
+            case 10:
+                result = PasswordCrack.mangleToggleCase1(str);
+                break;
+
+            case 11:
+                result = PasswordCrack.mangleReplaceE(str);
+                break;
+
+            case 12:
+                result = PasswordCrack.mangleReplaceO(str);
+                break;
+
+            case 13:
+                result = PasswordCrack.mangleReplaceA(str);
+                break;
+
+            case 14:
+                result = PasswordCrack.mangleReplaceL(str);
+                break;
+
+            case 15:
+                result = PasswordCrack.mangleReplaceI(str);
+                break;
+
+            case 16:
+                result = PasswordCrack.mangleReplaceAll(str);
+                break;            
+
+        } 
+
+        return result;      
+    }
+
+    public static void main(String args[]) throws IOException{
         // java PasswordCrack inputFile1 inputFile2
         File inputFile1 = new File(args[0]);
         File inputFile2 = new File(args[1]);
@@ -213,6 +357,9 @@ class PasswordCrack{
         ArrayList<String> possiblePW = new ArrayList<String>();
         ArrayList<String> words = new ArrayList<String>();
         ArrayList<String> pwDictionary = new ArrayList<String>();
+
+        String[] naivePW = {"password", "123456", "12345678", "abc123", "qwerty","monkey","letmein","dragon","111111","baseball","iloveyou","trustno1",
+        "1234567","sunshine","master","123123","welcome","shadow","ashley","football","jesus","ninja","mustang","password1"};
 
         Scanner dictionaryText = new Scanner(new FileReader(inputFile1));
         while(dictionaryText.hasNextLine()){
@@ -246,21 +393,29 @@ class PasswordCrack{
             students[j].passwords.addAll(mergeHelper1);
             students[j].passwords.addAll(mergeHelper4);
             ArrayList<String> mergeHelper2 = new ArrayList<String>(easyMangles(students[j].firstName));
-            ArrayList<String> mergeHelper5 = new ArrayList<String>(comboMangles(students[j].username));
-            ArrayList<String> mergeHelper8 = new ArrayList<String>(replaceMangles(students[j].username));
-            ArrayList<String> mergeHelper11 = new ArrayList<String>(replaceOtherMangles(students[j].username));
+            ArrayList<String> mergeHelper5 = new ArrayList<String>(comboMangles(students[j].firstName));
+            ArrayList<String> mergeHelper8 = new ArrayList<String>(replaceMangles(students[j].firstName));
+            ArrayList<String> mergeHelper11 = new ArrayList<String>(replaceOtherMangles(students[j].firstName));
             students[j].passwords.addAll(mergeHelper11);
             students[j].passwords.addAll(mergeHelper8);
             students[j].passwords.addAll(mergeHelper2);
             students[j].passwords.addAll(mergeHelper5);
             ArrayList<String> mergeHelper3 = new ArrayList<String>(easyMangles(students[j].lastName));
-            ArrayList<String> mergeHelper6 = new ArrayList<String>(comboMangles(students[j].username));
-            ArrayList<String> mergeHelper9 = new ArrayList<String>(replaceMangles(students[j].username));
-            ArrayList<String> mergeHelper12 = new ArrayList<String>(replaceOtherMangles(students[j].username));
+            ArrayList<String> mergeHelper6 = new ArrayList<String>(comboMangles(students[j].lastName));
+            ArrayList<String> mergeHelper9 = new ArrayList<String>(replaceMangles(students[j].lastName));
+            ArrayList<String> mergeHelper12 = new ArrayList<String>(replaceOtherMangles(students[j].lastName));
             students[j].passwords.addAll(mergeHelper12);
             students[j].passwords.addAll(mergeHelper9);
             students[j].passwords.addAll(mergeHelper3);
             students[j].passwords.addAll(mergeHelper6);
+            ArrayList<String> mergeHelper13 = new ArrayList<String>(easyMangles(students[j].name));
+            ArrayList<String> mergeHelper14 = new ArrayList<String>(comboMangles(students[j].name));
+            ArrayList<String> mergeHelper15 = new ArrayList<String>(replaceMangles(students[j].name));
+            ArrayList<String> mergeHelper16 = new ArrayList<String>(replaceOtherMangles(students[j].name));
+            students[j].passwords.addAll(mergeHelper13);
+            students[j].passwords.addAll(mergeHelper14);
+            students[j].passwords.addAll(mergeHelper15);
+            students[j].passwords.addAll(mergeHelper16);
             // students[j].passwords.addAll(easyMangles(students[j].username));
             // students[j].passwords.addAll(easyMangles(students[j].firstName));
             // students[j].passwords.addAll(easyMangles(students[j].lastName));
@@ -289,6 +444,16 @@ class PasswordCrack{
             }
         }
 
+        // check the most commonly used passwords
+        for(int count = 0; count < naivePW.length; count++){
+        // LOOP through array of students
+            for(int j = 0; j < students.length; j++){
+                if(students[j].cracked == false){
+                    PasswordCrack.checkMatch(students[j], naivePW[count]);
+                }
+            }
+        }
+
         for(int count = 0; count < pwDictionary.size(); count++){
         // LOOP through array of students
             for(int j = 0; j < students.length; j++){
@@ -297,5 +462,30 @@ class PasswordCrack{
                 }
             }
         }
-   }
+
+        // System.out.println("words has " + words.get(0));
+        String str;
+        while(true){
+            for(int count = 0; count < words.size(); count++){
+                // get word from the dictionary and mangle it at least once
+                // System.out.println(words.get(count));
+                str = PasswordCrack.generateMangles(words.get(count));
+
+                // generate a number of times to mangle word more
+                int manglesNum = new Random().nextInt(17);
+                for(int k = 0; k < manglesNum; k++){
+                    str = PasswordCrack.generateMangles(str);
+                }
+
+                for(int j = 0; j < students.length; j++){
+                    if(students[j].cracked == false){
+                        PasswordCrack.checkMatch(students[j], str);
+                    }
+                }
+
+                // str = PasswordCrack.mangleAppend(PasswordCrack.manglePrepend(words.get(count)));
+            }
+        }
+
+    }
 }

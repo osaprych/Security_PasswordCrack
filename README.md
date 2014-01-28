@@ -1,9 +1,10 @@
 Security_PasswordCrack
+
+http://www.cs.utexas.edu/~byoung/cs361/crack-assignment.html
+
 ======================
 
 Olga Saprycheva
-EID os3587
-CSID osaprych
 
 My algorithms has two classes Studend and PasswordCrack. Student stores infromation about students 
 while PasswordCrack has main method and has many "mangles" functions which generate various mangles.
